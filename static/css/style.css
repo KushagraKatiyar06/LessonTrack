@@ -1,0 +1,259 @@
+/* 
+  English 2 Success Color Scheme:
+  - #01401C (Slightly Dark Green) -> e2s-mid-green
+  - #012611 (Dark Green)         -> e2s-dark-green
+  - #AEBF93 (Light Green)        -> e2s-light-green
+  - #F2F2F2 (Whiteish)           -> e2s-whitish
+*/
+
+/* General Body Styles */
+body.bg-e2s-whitish {
+    background-color: #F2F2F2;
+}
+
+/* Background Colors */
+.bg-e2s-dark-green { background-color: #012611; }
+.bg-e2s-mid-green { background-color: #01401C; }
+.bg-e2s-light-green { background-color: #AEBF93; }
+.bg-e2s-light-green-bg { background-color: #eef2e7; } /* A lighter version for backgrounds */
+
+/* Text Colors */
+.text-e2s-dark-green { color: #012611; }
+.text-e2s-mid-green { color: #01401C; }
+.text-e2s-light-green { color: #AEBF93; }
+
+/* Border Colors */
+.border-e2s-mid-green { border-color: #01401C; }
+.border-e2s-light-green { border-color: #AEBF93; }
+
+
+/* Custom Component Styles */
+.status-active-e2s {
+    background-color: #eef2e7;
+    color: #01401C;
+    font-weight: 500;
+}
+
+
+/* Custom styles for LessonTrack Dashboard */
+/* Smooth transitions */
+* {
+    transition: all 0.2s ease-in-out;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+
+/* Hover effects for cards */
+.bg-white:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.07);
+}
+
+/* Gradient text */
+.gradient-text {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Pulse animation for active elements */
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+}
+
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+/* Fade in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* Custom button styles */
+.btn-primary {
+    background-color: #01401C;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-1px);
+    background-color: #012611;
+}
+
+/* Status indicators */
+.status-active {
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+}
+
+.status-inactive {
+    background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+    color: white;
+}
+
+/* Card hover effects */
+.card-hover {
+    transition: all 0.3s ease;
+}
+
+.card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+}
+
+/* Loading spinner */
+.spinner {
+    border: 3px solid #f3f4f6;
+    border-top: 3px solid #01401C;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .text-2xl {
+        font-size: 1.5rem;
+    }
+    
+    .p-6 {
+        padding: 1rem;
+    }
+}
+
+/* Custom focus styles */
+.focus-ring:focus {
+    outline: none;
+    ring: 2px;
+    ring-color: #01401C;
+    ring-offset: 2px;
+}
+
+/* Table improvements */
+.table-hover tbody tr:hover {
+    background-color: #f8fafc;
+    transform: scale(1.01);
+}
+
+/* Avatar styles */
+.avatar {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+/* Badge styles */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Progress bar */
+.progress-bar {
+    background: linear-gradient(90deg, #3b82f6 0%, #8b5cf6 100%);
+    height: 4px;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+}
+
+/* Tooltip styles */
+.tooltip {
+    position: relative;
+}
+
+.tooltip:hover::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1f2937;
+    color: white;
+    padding: 0.5rem;
+    border-radius: 0.375rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    z-index: 10;
+}
+
+/* Notification styles */
+.notification {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    z-index: 50;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+} 

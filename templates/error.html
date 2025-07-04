@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LessonTrack - Error</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body class="bg-e2s-whitish">
+    <!-- Navigation -->
+    <nav class="bg-e2s-dark-green text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-3">
+                <div class="flex items-center space-x-3">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="English 2 Success Logo" class="h-12">
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/demo" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-1 rounded-lg text-sm transition-all">
+                        <i class="fas fa-vial mr-1"></i>View Demo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="bg-red-50 border-l-4 border-red-500 text-red-800 p-6 rounded-lg shadow-md">
+            <div class="flex">
+                <div class="py-1">
+                    <i class="fas fa-exclamation-triangle fa-2x text-red-500 mr-4"></i>
+                </div>
+                <div>
+                    <h2 class="font-bold text-xl mb-2">Error Connecting to Backend</h2>
+                    <p class="text-red-700">The application could not fetch live data. This usually happens when API keys or file permissions are not set up correctly.</p>
+                    
+                    <div class="mt-4 bg-red-100 p-3 rounded">
+                        <p class="font-semibold">Error Details:</p>
+                        <pre class="mt-1 text-xs whitespace-pre-wrap"><code>{{ message }}</code></pre>
+                    </div>
+
+                    <div class="mt-6">
+                        <p class="font-semibold">Troubleshooting Steps:</p>
+                        <ul class="list-disc list-inside mt-2 text-sm text-red-700 space-y-1">
+                            <li>Ensure the <strong><code>sheets_credentials.json</code></strong> file is present in the project's root directory.</li>
+                            <li>Check that all required URLs (<code>TUTOR_INFO_CSV_URL</code>, <code>RESPONSE_CSV_URL</code>) and your <code>OPENAI_API_KEY</code> are correctly set in the <strong><code>.env</code></strong> file.</li>
+                            <li>Verify that the service account email from your credentials file has "Editor" access to all required Google Sheets.</li>
+                            <li>For a full guide, please refer to the <strong><code>SETUP.md</code></strong> file in your project.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html> 

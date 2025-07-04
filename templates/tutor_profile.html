@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ tutor.name }} - Tutor Profile | English 2 Success</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="bg-e2s-whitish">
+    <!-- Navigation -->
+    <nav class="bg-e2s-dark-green text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-3">
+                <div class="flex items-center space-x-3 relative overflow-visible">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="English 2 Success Logo" class="h-40 -mt-4 -ml-2">
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm opacity-90 hidden md:block">Automated Tutor Management System</span>
+                    {% if live_data %}
+                        <a href="/refresh" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-2 rounded-lg text-sm transition-all font-semibold">
+                            <i class="fas fa-sync-alt mr-1"></i> Refresh Data
+                        </a>
+                        <a href="/" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-2 rounded-lg text-sm transition-all font-semibold">
+                            <i class="fas fa-arrow-left mr-1"></i> Back to Dashboard
+                        </a>
+                    {% else %}
+                        <a href="/" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-2 rounded-lg text-sm transition-all font-semibold">
+                            <i class="fas fa-broadcast-tower mr-1"></i> Go Live
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Tutor Profile Header -->
+        <div class="bg-white rounded-xl shadow-md p-8 mb-8">
+            <div class="flex items-center space-x-6">
+                <div class="flex-shrink-0">
+                    <div class="h-24 w-24 rounded-full bg-e2s-mid-green flex items-center justify-center text-white text-3xl font-bold">
+                        {{ tutor.name.split()[0][0] }}{{ tutor.name.split()[-1][0] if tutor.name.split()|length > 1 else '' }}
+                    </div>
+                </div>
+                <div class="flex-1">
+                    <h1 class="text-3xl font-bold text-e2s-dark-green mb-2">{{ tutor.name }}</h1>
+                    <div class="flex items-center space-x-4 text-gray-600">
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-e2s-light-green-bg text-e2s-dark-green">
+                            <i class="fas fa-graduation-cap mr-2"></i>{{ tutor.school }}
+                        </span>
+                        {% if tutor.taught_this_week == "Yes" %}
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium status-active-e2s">
+                                <i class="fas fa-check mr-1"></i>Active This Week
+                            </span>
+                        {% else %}
+                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
+                                <i class="fas fa-pause mr-1"></i>Inactive This Week
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+            <h2 class="text-xl font-semibold text-e2s-dark-green mb-4 flex items-center">
+                <i class="fas fa-address-card mr-2 text-e2s-mid-green"></i>
+                Contact Information
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-envelope text-e2s-mid-green text-lg"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Email</p>
+                        <p class="text-e2s-dark-green font-semibold">{{ tutor.email }}</p>
+                    </div>
+                </div>
+                {% if tutor.phone %}
+                <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                    <div class="flex-shrink-0">
+                        <i class="fas fa-phone text-e2s-mid-green text-lg"></i>
+                    </div>
+                    <div>
+                        <p class="text-sm font-medium text-gray-600">Phone</p>
+                        <p class="text-e2s-dark-green font-semibold">{{ tutor.phone }}</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-e2s-mid-green">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-e2s-light-green-bg text-e2s-dark-green">
+                        <i class="fas fa-chalkboard-teacher text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Total Lessons</p>
+                        <p class="text-2xl font-bold text-e2s-dark-green">{{ tutor.total_lessons }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-e2s-mid-green">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-e2s-light-green-bg text-e2s-dark-green">
+                        <i class="fas fa-clock text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Total Hours</p>
+                        <p class="text-2xl font-bold text-e2s-dark-green">{{ "%.1f"|format(tutor.total_hours) }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-e2s-mid-green">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-e2s-light-green-bg text-e2s-dark-green">
+                        <i class="fas fa-clipboard-check text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">This Week</p>
+                        <p class="text-2xl font-bold text-e2s-dark-green">{{ "%.1f"|format(tutor.weekly_hours) }} hrs</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-e2s-mid-green">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-e2s-light-green-bg text-e2s-dark-green">
+                        <i class="fas fa-file-alt text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Submissions</p>
+                        <p class="text-2xl font-bold text-e2s-dark-green">{{ tutor.total_submissions }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Latest AI Summary Report -->
+        <div class="bg-white rounded-xl shadow-md p-6">
+            <h2 class="text-xl font-semibold text-e2s-dark-green mb-4 flex items-center">
+                <i class="fas fa-robot mr-2 text-e2s-mid-green"></i>
+                Latest AI Summary Report
+            </h2>
+            <div class="bg-gray-50 rounded-lg p-6">
+                {% if ai_summary and ai_summary != "No responses to summarize" %}
+                    <div class="prose max-w-none">
+                        <p class="text-gray-700 leading-relaxed">{{ ai_summary }}</p>
+                    </div>
+                {% else %}
+                    <div class="text-center py-8">
+                        <i class="fas fa-file-alt text-4xl text-gray-300 mb-4"></i>
+                        <p class="text-gray-500">No recent activity to summarize</p>
+                        <p class="text-sm text-gray-400 mt-2">This tutor hasn't submitted any reports recently.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html> 

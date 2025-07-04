@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LessonTrack Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body class="bg-e2s-whitish">
+    <!-- Navigation -->
+    <nav class="bg-e2s-dark-green text-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-3">
+                <div class="flex items-center space-x-3 relative overflow-visible">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="English 2 Success Logo" class="h-40 -mt-4 -ml-2">
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm opacity-90 hidden md:block">Automated Tutor Management System</span>
+                    {% if live_data %}
+                        <a href="/refresh" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-2 rounded-lg text-sm transition-all font-semibold">
+                            <i class="fas fa-sync-alt mr-1"></i> Refresh Data
+                        </a>
+                        <a href="/demo" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-2 rounded-lg text-sm transition-all font-semibold">
+                            <i class="fas fa-vial mr-1"></i> View Demo
+                        </a>
+                    {% else %}
+                        <a href="/" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-2 rounded-lg text-sm transition-all font-semibold">
+                            <i class="fas fa-broadcast-tower mr-1"></i> Go Live
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Statistics Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-e2s-mid-green">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-e2s-light-green-bg text-e2s-dark-green">
+                        <i class="fas fa-users text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Total Tutors</p>
+                        <p class="text-2xl font-bold text-e2s-dark-green">{{ stats.total_tutors }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-e2s-mid-green">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-e2s-light-green-bg text-e2s-dark-green">
+                        <i class="fas fa-chalkboard-teacher text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Active This Week</p>
+                        <p class="text-2xl font-bold text-e2s-dark-green">{{ stats.active_this_week }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-e2s-mid-green">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-e2s-light-green-bg text-e2s-dark-green">
+                        <i class="fas fa-clipboard-check text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Submitted Reports</p>
+                        <p class="text-2xl font-bold text-e2s-dark-green">{{ stats.submitted_this_week }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-e2s-mid-green">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-e2s-light-green-bg text-e2s-dark-green">
+                        <i class="fas fa-clock text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Hours This Week</p>
+                        <p class="text-2xl font-bold text-e2s-dark-green">{{ "%.1f"|format(stats.total_hours_this_week) }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-e2s-mid-green">
+                <div class="flex items-center">
+                    <div class="p-3 rounded-full bg-e2s-light-green-bg text-e2s-dark-green">
+                        <i class="fas fa-chart-line text-xl"></i>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Total Hours</p>
+                        <p class="text-2xl font-bold text-e2s-dark-green">{{ "%.1f"|format(stats.total_hours_all_time) }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Dashboard Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Tutors List -->
+            <div class="lg:col-span-2">
+                <div class="bg-white rounded-xl shadow-md">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h2 class="text-xl font-semibold text-e2s-dark-green flex items-center">
+                            <i class="fas fa-list mr-2 text-e2s-mid-green"></i>
+                            Tutor Overview
+                        </h2>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tutor</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">School</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">This Week</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                {% for tutor in tutors %}
+                                <tr class="hover:bg-gray-50 transition-colors">
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <div class="flex items-center">
+                                            <div class="flex-shrink-0 h-10 w-10">
+                                                <div class="h-10 w-10 rounded-full bg-e2s-mid-green flex items-center justify-center text-white font-semibold">
+                                                    {{ tutor.name.split()[0][0] }}{{ tutor.name.split()[-1][0] if tutor.name.split()|length > 1 else '' }}
+                                                </div>
+                                            </div>
+                                            <div class="ml-4">
+                                                <div class="text-sm font-medium text-e2s-dark-green">
+                                                    {% if live_data %}
+                                                        <a href="/tutor/{{ tutor.name }}" class="hover:text-e2s-mid-green transition-colors cursor-pointer">
+                                                            {{ tutor.name }}
+                                                        </a>
+                                                    {% else %}
+                                                        {{ tutor.name }}
+                                                    {% endif %}
+                                                </div>
+                                                <div class="text-sm text-gray-500">{{ tutor.email }}</div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-e2s-light-green-bg text-e2s-dark-green">
+                                            {{ tutor.school }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-e2s-dark-green">
+                                        {{ "%.1f"|format(tutor.weekly_hours) }} hrs
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-e2s-dark-green">
+                                        {{ tutor.total_lessons }} lessons, {{ "%.1f"|format(tutor.total_hours) }} hrs
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        {% if tutor.taught_this_week == "Yes" %}
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium status-active-e2s">
+                                                <i class="fas fa-check mr-1"></i>Active
+                                            </span>
+                                        {% else %}
+                                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                                                <i class="fas fa-pause mr-1"></i>Inactive
+                                            </span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="space-y-6">
+                <!-- Representatives -->
+                <div class="bg-white rounded-xl shadow-md">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-e2s-dark-green flex items-center">
+                            <i class="fas fa-user-tie mr-2 text-e2s-mid-green"></i>
+                            School Representatives
+                        </h3>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        {% for rep in representatives %}
+                        <div class="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+                            <div class="flex-shrink-0 h-8 w-8">
+                                <div class="h-8 w-8 rounded-full bg-e2s-mid-green flex items-center justify-center text-white text-sm font-semibold">
+                                    {{ rep.name.split()[0][0] }}{{ rep.name.split()[-1][0] if rep.name.split()|length > 1 else '' }}
+                                </div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-e2s-dark-green truncate">{{ rep.name }}</p>
+                                <p class="text-sm text-gray-500 truncate">{{ rep.school }}</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- AI Summaries -->
+                <div class="bg-white rounded-xl shadow-md">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-e2s-dark-green flex items-center">
+                            <i class="fas fa-robot mr-2 text-e2s-mid-green"></i>
+                            AI-Generated Summaries
+                        </h3>
+                    </div>
+                    <div class="p-6 space-y-4">
+                        {% for school, summaries in summaries.items() %}
+                        <div class="border-l-4 border-e2s-light-green pl-4">
+                            <h4 class="font-medium text-e2s-dark-green mb-2">{{ school }}</h4>
+                            {% for summary in summaries[:2] %}
+                            <p class="text-sm text-gray-600 mb-2">{{ summary[:100] }}...</p>
+                            {% endfor %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- System Features -->
+                <div class="bg-white rounded-xl shadow-md">
+                    <div class="px-6 py-4 border-b border-gray-200">
+                        <h3 class="text-lg font-semibold text-e2s-dark-green flex items-center">
+                            <i class="fas fa-cogs mr-2 text-e2s-mid-green"></i>
+                            System Features
+                        </h3>
+                    </div>
+                    <div class="p-6 space-y-3">
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-envelope text-e2s-mid-green mr-3"></i>
+                            Automated Monday Reminders
+                        </div>
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-chart-bar text-e2s-mid-green mr-3"></i>
+                            Sunday Weekly Reports
+                        </div>
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-shield-alt text-e2s-mid-green mr-3"></i>
+                            AI Safety Monitoring
+                        </div>
+                        <div class="flex items-center text-sm text-gray-700">
+                            <i class="fas fa-sync text-e2s-mid-green mr-3"></i>
+                            Real-time Data Sync
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-e2s-dark-green text-white py-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <p class="text-gray-400">English 2 Success - Automated Tutor Management System</p>
+                <p class="text-sm text-gray-500 mt-2">Powered by Google Sheets, Gmail API, and OpenAI GPT</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html> 
