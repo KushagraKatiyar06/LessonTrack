@@ -1,0 +1,11 @@
+# Environment variables
+.env
+
+# Google credentials and tokens
+sheets_credentials.json
+gmail_credentials.json
+gmail_token.json
+
+# Python cache
+__pycache__/
+*.pyc

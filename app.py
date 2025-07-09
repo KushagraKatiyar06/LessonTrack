@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, redirect, url_for
 import os
 from dotenv import load_dotenv
 from ai_summary import (
@@ -124,7 +124,8 @@ def refresh_data():
                              summaries=school_summaries,
                              tutors_by_school=tutors_by_school,
                              stats=stats,
-                             live_data=True) 
+                             live_data=True,
+                             show_refresh_popup=True) 
                              
     except Exception as e:
         error_message = f"An error occurred: {e}. Please ensure your .env file and API credentials (sheets_credentials.json) are set up correctly."
@@ -146,6 +147,10 @@ def tutor_profile(tutor_name):
         if not tutors:
             return render_template('error.html', message="Could not load tutor data.")
 
+        # *** ADD THIS LINE TO FIX THE ISSUE ***
+        # This will fetch the latest Google Form responses and attach them to the tutors.
+        attach_lesson_reports_to_tutors(tutors, RESPONSE_CSV_URL)
+
         # Find the specific tutor
         tutor = None
         for t in tutors:
@@ -156,17 +161,46 @@ def tutor_profile(tutor_name):
         if not tutor:
             return render_template('error.html', message=f"Tutor '{tutor_name}' not found.")
 
+        # Now, this will generate a summary based on the freshly attached report.
         ai_summary = tutor.summarize_responses()
 
         return render_template('tutor_profile.html',
                              tutor=tutor,
                              ai_summary=ai_summary,
+                             raw_responses=tutor.google_form_responses,
                              live_data=True)
                              
     except Exception as e:
         error_message = f"An error occurred: {e}. Please ensure your .env file and API credentials (sheets_credentials.json) are set up correctly."
         print(error_message)
         return render_template('error.html', message=error_message)
+    
+# --- Demo Tutor Profile Route ---
+@app.route('/demo/tutor/<tutor_name>')
+def demo_tutor_profile(tutor_name):
+    # Find the specific tutor from MOCK_TUTORS
+    tutor_data = next((t for t in MOCK_TUTORS if t['name'].lower() == tutor_name.lower()), None)
+    
+    if not tutor_data:
+        return render_template('error.html', message=f"Demo tutor '{tutor_name}' not found.")
+
+    # Get the mock raw responses for the tutor
+    raw_responses = MOCK_RAW_RESPONSES.get(tutor_data['name'], {"Info": "No raw response data available for this demo tutor."})
+
+    # To reuse the template, we rename keys to match the live Tutor object attributes
+    # The template uses 'lesson_count', but mock data has 'total_lessons'
+    tutor_data_for_template = {
+        **tutor_data,
+        'lesson_count': tutor_data['total_lessons'],
+        'submission_count': tutor_data['total_submissions']
+    }
+
+
+    return render_template('tutor_profile.html',
+                         tutor=tutor_data_for_template,
+                         raw_responses=raw_responses,
+                         ai_summary="This is a sample AI summary for the demo profile. It highlights progress and plans for future lessons.",
+                         live_data=False)
 
 # Test Data (Demo Page)
 MOCK_TUTORS = [
@@ -250,6 +284,26 @@ MOCK_SUMMARIES = {
     "RBC": [
         "Chloe Nguyen: Delivered 6 hours of comprehensive English literature tutoring. Covered Shakespeare's Macbeth with detailed character analysis. Student showed exceptional critical thinking skills."
     ]
+}
+
+MOCK_RAW_RESPONSES = {
+    "Aisha Khan": {
+        "Timestamp": "2024-01-15 14:25:00",
+        "Tutor Name": "Aisha Khan",
+        "Did you tutor this week?": "Yes",
+        "How many hours?": "5.5",
+        "Lesson Summary": "Focused on advanced English grammar. The student showed significant improvement in constructing complex sentences using different clauses.",
+        "Any concerns?": "No concerns to report."
+    },
+    "Javier Garcia": {
+        "Timestamp": "2024-01-15 16:40:00",
+        "Tutor Name": "Javier Garcia",
+        "Did you tutor this week?": "Yes",
+        "How many hours?": "4.0",
+        "Lesson Summary": "Conducted conversation practice covering verb tenses and pronunciation. We used role-playing scenarios which the student found very engaging.",
+        "Any concerns?": "None."
+    },
+    
 }
 
 @app.route('/demo')

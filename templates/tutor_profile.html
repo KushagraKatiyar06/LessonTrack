@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,27 +9,36 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
+
 <body class="bg-e2s-whitish">
     <!-- Navigation -->
     <nav class="bg-e2s-dark-green text-white shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-3">
                 <div class="flex items-center space-x-3 relative overflow-visible">
-                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="English 2 Success Logo" class="h-40 -mt-4 -ml-2">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="English 2 Success Logo"
+                        class="h-40 -mt-4 -ml-2">
                 </div>
                 <div class="flex items-center space-x-4">
                     <span class="text-sm opacity-90 hidden md:block">Automated Tutor Management System</span>
                     {% if live_data %}
-                        <a href="/refresh" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-2 rounded-lg text-sm transition-all font-semibold">
-                            <i class="fas fa-sync-alt mr-1"></i> Refresh Data
-                        </a>
-                        <a href="/" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-2 rounded-lg text-sm transition-all font-semibold">
-                            <i class="fas fa-arrow-left mr-1"></i> Back to Dashboard
-                        </a>
+                    <a href="/refresh"
+                        class="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-2 rounded-lg text-sm transition-all font-semibold">
+                        <i class="fas fa-sync-alt mr-1"></i> Refresh Data
+                    </a>
+                    <a href="/"
+                        class="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-2 rounded-lg text-sm transition-all font-semibold">
+                        <i class="fas fa-arrow-left mr-1"></i> Back to Dashboard
+                    </a>
                     {% else %}
-                        <a href="/" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-2 rounded-lg text-sm transition-all font-semibold">
-                            <i class="fas fa-broadcast-tower mr-1"></i> Go Live
-                        </a>
+                    <a href="/demo"
+                        class="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-2 rounded-lg text-sm transition-all font-semibold">
+                        <i class="fas fa-arrow-left mr-1"></i> Back to Demo
+                    </a>
+                    <a href="/"
+                        class="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-2 rounded-lg text-sm transition-all font-semibold">
+                        <i class="fas fa-broadcast-tower mr-1"></i> Go Live
+                    </a>
                     {% endif %}
                 </div>
             </div>
@@ -41,25 +51,18 @@
         <div class="bg-white rounded-xl shadow-md p-8 mb-8">
             <div class="flex items-center space-x-6">
                 <div class="flex-shrink-0">
-                    <div class="h-24 w-24 rounded-full bg-e2s-mid-green flex items-center justify-center text-white text-3xl font-bold">
-                        {{ tutor.name.split()[0][0] }}{{ tutor.name.split()[-1][0] if tutor.name.split()|length > 1 else '' }}
+                    <div
+                        class="h-24 w-24 rounded-full bg-e2s-mid-green flex items-center justify-center text-white text-3xl font-bold">
+                        {{ tutor.name.split()[0][0] }}{{ tutor.name.split()[-1][0] if tutor.name.split()|length > 1 else
+                        '' }}
                     </div>
                 </div>
                 <div class="flex-1">
                     <h1 class="text-3xl font-bold text-e2s-dark-green mb-2">{{ tutor.name }}</h1>
                     <div class="flex items-center space-x-4 text-gray-600">
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-e2s-light-green-bg text-e2s-dark-green">
+                        <span
+                            class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-e2s-light-green-bg text-e2s-dark-green">
                             <i class="fas fa-graduation-cap mr-2"></i>{{ tutor.school }}
-                        </span>
-                        {% if tutor.taught_this_week == "Yes" %}
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium status-active-e2s">
-                                <i class="fas fa-check mr-1"></i>Active This Week
-                            </span>
-                        {% else %}
-                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800">
-                                <i class="fas fa-pause mr-1"></i>Inactive This Week
-                            </span>
-                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -103,8 +106,8 @@
                         <i class="fas fa-chalkboard-teacher text-xl"></i>
                     </div>
                     <div class="ml-4">
-                        <p class="text-sm font-medium text-gray-600">Total Lessons</p>
-                        <p class="text-2xl font-bold text-e2s-dark-green">{{ tutor.total_lessons }}</p>
+                        <p class="text-xs font-medium text-gray-600">Total Lessons</p>
+                        <p class="text-2xl font-bold text-e2s-dark-green">{{ tutor.lesson_count }}</p>
                     </div>
                 </div>
             </div>
@@ -128,7 +131,8 @@
                     </div>
                     <div class="ml-4">
                         <p class="text-sm font-medium text-gray-600">This Week</p>
-                        <p class="text-2xl font-bold text-e2s-dark-green">{{ "%.1f"|format(tutor.weekly_hours) }} hrs</p>
+                        <p class="text-2xl font-bold text-e2s-dark-green">{{ "%.1f"|format(tutor.weekly_hours) }} hrs
+                        </p>
                     </div>
                 </div>
             </div>
@@ -140,7 +144,7 @@
                     </div>
                     <div class="ml-4">
                         <p class="text-sm font-medium text-gray-600">Submissions</p>
-                        <p class="text-2xl font-bold text-e2s-dark-green">{{ tutor.total_submissions }}</p>
+                        <p class="text-2xl font-bold text-e2s-dark-green">{{ tutor.submission_count }}</p>
                     </div>
                 </div>
             </div>
@@ -148,26 +152,101 @@
 
         <!-- Latest AI Summary Report -->
         <div class="bg-white rounded-xl shadow-md p-6">
-            <h2 class="text-xl font-semibold text-e2s-dark-green mb-4 flex items-center">
-                <i class="fas fa-robot mr-2 text-e2s-mid-green"></i>
-                Latest AI Summary Report
-            </h2>
+            <div class="relative">
+                <h2 class="text-xl font-semibold text-e2s-dark-green mb-4 flex items-center">
+                    <i class="fas fa-robot mr-2 text-e2s-mid-green"></i>
+                    Latest AI Summary Report
+                </h2>
+
+                <button id="view-original-btn"
+                    class="absolute top-0 right-0 bg-gray-200 hover:bg-gray-300 text-gray-700 text-xs font-bold py-1 px-2 rounded-full flex items-center transition-colors">
+                    <i class="fas fa-file-alt mr-1"></i>
+                    View Original
+                </button>
+
+
+            </div>
             <div class="bg-gray-50 rounded-lg p-6">
                 {% if ai_summary and ai_summary != "No responses to summarize" %}
-                    <div class="prose max-w-none">
-                        <p class="text-gray-700 leading-relaxed">{{ ai_summary }}</p>
-                    </div>
+                <div class="prose max-w-none">
+                    <p class="text-gray-700 leading-relaxed">{{ ai_summary }}</p>
+                </div>
                 {% else %}
-                    <div class="text-center py-8">
-                        <i class="fas fa-file-alt text-4xl text-gray-300 mb-4"></i>
-                        <p class="text-gray-500">No recent activity to summarize</p>
-                        <p class="text-sm text-gray-400 mt-2">This tutor hasn't submitted any reports recently.</p>
-                    </div>
+                <div class="text-center py-8">
+                    <i class="fas fa-file-alt text-4xl text-gray-300 mb-4"></i>
+                    <p class="text-gray-500">No recent activity to summarize</p>
+                    <p class="text-sm text-gray-400 mt-2">This tutor hasn't submitted any reports recently.</p>
+                </div>
                 {% endif %}
             </div>
         </div>
     </div>
 
     <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+
+    <div id="response-modal"
+        class="fixed inset-0 bg-black bg-opacity-50 z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-lg shadow-2xl w-full max-w-2xl max-h-full overflow-y-auto">
+            <div class="flex justify-between items-center p-4 border-b">
+                <h3 class="text-lg font-semibold text-e2s-dark-green">Original Form Response</h3>
+                <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600">
+                    <i class="fas fa-times fa-lg"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <dl class="space-y-4">
+                    {% if tutor.google_form_responses %}
+                    {% for key, value in raw_responses.items() %}
+                    {% if value and value|string|trim != '' %}
+                    <div>
+                        <dt class="font-semibold text-gray-700 text-sm">{{ key }}</dt>
+                        <dd class="mt-1 text-gray-800 bg-gray-50 p-2 rounded-md whitespace-pre-wrap">{{ value }}</dd>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                    {% else %}
+                    <p class="text-gray-500">No raw response data available.</p>
+                    {% endif %}
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const modal = document.getElementById('response-modal');
+            const viewBtn = document.getElementById('view-original-btn');
+            const closeBtn = document.getElementById('close-modal-btn');
+
+            // Function to open the modal
+            const openModal = () => {
+                modal.classList.remove('hidden');
+            };
+
+            // Function to close the modal
+            const closeModal = () => {
+                modal.classList.add('hidden');
+            };
+
+            // Event listeners
+            if (viewBtn) {
+                viewBtn.addEventListener('click', openModal);
+            }
+            if (closeBtn) {
+                closeBtn.addEventListener('click', closeModal);
+            }
+
+            // Close modal if user clicks outside of the content box
+            modal.addEventListener('click', function (event) {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
+
+
 </body>
-</html> 
+
+</html>

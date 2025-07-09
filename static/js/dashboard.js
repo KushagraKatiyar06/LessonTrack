@@ -1,32 +1,32 @@
 // LessonTrack Dashboard JavaScript
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Initialize dashboard
     initializeDashboard();
-    
+
     // Add smooth scrolling
     addSmoothScrolling();
-    
+
     // Add hover effects
     addHoverEffects();
-    
+
     // Initialize tooltips
     initializeTooltips();
-    
+
     // Add loading states
     addLoadingStates();
 });
 
 function initializeDashboard() {
     console.log('LessonTrack Dashboard initialized');
-    
+
     // Add fade-in animation to cards
     const cards = document.querySelectorAll('.bg-white');
     cards.forEach((card, index) => {
         card.style.animationDelay = `${index * 0.1}s`;
         card.classList.add('fade-in');
     });
-    
+
     // Add pulse effect to active status indicators
     const activeStatuses = document.querySelectorAll('.bg-green-100');
     activeStatuses.forEach(status => {
@@ -54,26 +54,26 @@ function addHoverEffects() {
     // Enhanced hover effects for table rows
     const tableRows = document.querySelectorAll('tbody tr');
     tableRows.forEach(row => {
-        row.addEventListener('mouseenter', function() {
+        row.addEventListener('mouseenter', function () {
             this.style.transform = 'scale(1.01)';
             this.style.backgroundColor = '#f8fafc';
         });
-        
-        row.addEventListener('mouseleave', function() {
+
+        row.addEventListener('mouseleave', function () {
             this.style.transform = 'scale(1)';
             this.style.backgroundColor = '';
         });
     });
-    
+
     // Card hover effects
     const cards = document.querySelectorAll('.bg-white');
     cards.forEach(card => {
-        card.addEventListener('mouseenter', function() {
+        card.addEventListener('mouseenter', function () {
             this.style.transform = 'translateY(-4px)';
             this.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.1)';
         });
-        
-        card.addEventListener('mouseleave', function() {
+
+        card.addEventListener('mouseleave', function () {
             this.style.transform = 'translateY(0)';
             this.style.boxShadow = '';
         });
@@ -92,16 +92,16 @@ function addLoadingStates() {
     // Add loading spinner functionality
     const buttons = document.querySelectorAll('button, a');
     buttons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             if (this.classList.contains('loading')) {
                 return; // Prevent multiple clicks
             }
-            
+
             // Add loading state
             this.classList.add('loading');
             const originalText = this.textContent;
             this.innerHTML = '<div class="spinner inline-block mr-2"></div>Loading...';
-            
+
             // Simulate loading (remove in production)
             setTimeout(() => {
                 this.classList.remove('loading');
@@ -117,7 +117,7 @@ function updateStatistics() {
     statsElements.forEach(element => {
         const currentValue = parseInt(element.textContent);
         const newValue = currentValue + Math.floor(Math.random() * 5);
-        
+
         // Animate the number change
         animateNumber(element, currentValue, newValue);
     });
@@ -126,19 +126,19 @@ function updateStatistics() {
 function animateNumber(element, start, end) {
     const duration = 1000;
     const startTime = performance.now();
-    
+
     function update(currentTime) {
         const elapsed = currentTime - startTime;
         const progress = Math.min(elapsed / duration, 1);
-        
+
         const current = Math.floor(start + (end - start) * progress);
         element.textContent = current;
-        
+
         if (progress < 1) {
             requestAnimationFrame(update);
         }
     }
-    
+
     requestAnimationFrame(update);
 }
 
@@ -146,20 +146,20 @@ function animateNumber(element, start, end) {
 function initializeSearch() {
     const searchInput = document.getElementById('search-tutors');
     if (!searchInput) return;
-    
-    searchInput.addEventListener('input', function() {
+
+    searchInput.addEventListener('input', function () {
         const searchTerm = this.value.toLowerCase();
         const tableRows = document.querySelectorAll('tbody tr');
-        
+
         tableRows.forEach(row => {
             const tutorName = row.querySelector('td:first-child').textContent.toLowerCase();
             const tutorEmail = row.querySelector('td:first-child .text-gray-500').textContent.toLowerCase();
             const tutorSchool = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
-            
-            const matches = tutorName.includes(searchTerm) || 
-                           tutorEmail.includes(searchTerm) || 
-                           tutorSchool.includes(searchTerm);
-            
+
+            const matches = tutorName.includes(searchTerm) ||
+                tutorEmail.includes(searchTerm) ||
+                tutorSchool.includes(searchTerm);
+
             row.style.display = matches ? '' : 'none';
         });
     });
@@ -169,15 +169,15 @@ function initializeSearch() {
 function initializeFilters() {
     const filterButtons = document.querySelectorAll('[data-filter]');
     filterButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             const filterValue = this.getAttribute('data-filter');
             const tableRows = document.querySelectorAll('tbody tr');
-            
+
             // Remove active class from all buttons
             filterButtons.forEach(btn => btn.classList.remove('bg-blue-600', 'text-white'));
             // Add active class to clicked button
             this.classList.add('bg-blue-600', 'text-white');
-            
+
             tableRows.forEach(row => {
                 if (filterValue === 'all') {
                     row.style.display = '';
@@ -203,9 +203,9 @@ function showNotification(message, type = 'info') {
             </button>
         </div>
     `;
-    
+
     document.body.appendChild(notification);
-    
+
     // Auto-remove after 5 seconds
     setTimeout(() => {
         if (notification.parentElement) {
@@ -226,14 +226,14 @@ function exportData(format = 'csv') {
             status: cells[4].textContent.trim()
         };
     });
-    
+
     if (format === 'csv') {
-        const csvContent = 'data:text/csv;charset=utf-8,' + 
+        const csvContent = 'data:text/csv;charset=utf-8,' +
             'Name,School,Weekly Hours,Total,Status\n' +
-            tutors.map(tutor => 
+            tutors.map(tutor =>
                 `"${tutor.name}","${tutor.school}","${tutor.weeklyHours}","${tutor.total}","${tutor.status}"`
             ).join('\n');
-        
+
         const encodedUri = encodeURI(csvContent);
         const link = document.createElement('a');
         link.setAttribute('href', encodedUri);
@@ -242,14 +242,14 @@ function exportData(format = 'csv') {
         link.click();
         document.body.removeChild(link);
     }
-    
+
     showNotification('Data exported successfully!', 'success');
 }
 
 // Chart functionality (if Chart.js is available)
 function initializeCharts() {
     if (typeof Chart === 'undefined') return;
-    
+
     // Hours by school chart
     const ctx = document.getElementById('hours-chart');
     if (ctx) {
@@ -279,27 +279,28 @@ function initializeCharts() {
 }
 
 // Auto-refresh functionality
-function startAutoRefresh(interval = 30000) {
-    setInterval(() => {
-        // Simulate data refresh
-        updateStatistics();
-        showNotification('Data refreshed', 'info');
-    }, interval);
-}
+//function startAutoRefresh(interval = 30000) {
+//  setInterval(() => {
+// Simulate data refresh
+//    updateStatistics();
+//  showNotification('Data refreshed', 'info');
+//  }, interval);
+//}
+
 
 // Initialize all features
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     initializeSearch();
     initializeFilters();
     initializeCharts();
-    
+
     // Start auto-refresh after 30 seconds
-    setTimeout(() => {
-        startAutoRefresh();
-    }, 30000);
-    
+    //setTimeout(() => {
+    //  startAutoRefresh();
+    //}, 30000);
+
     // Add keyboard shortcuts
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', function (e) {
         if (e.ctrlKey && e.key === 'f') {
             e.preventDefault();
             const searchInput = document.getElementById('search-tutors');
@@ -307,7 +308,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 searchInput.focus();
             }
         }
-        
+
         if (e.ctrlKey && e.key === 'e') {
             e.preventDefault();
             exportData();
