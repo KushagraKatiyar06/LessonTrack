@@ -1,7 +1,7 @@
 # LessonTrack: Automated Tutor Reporting and Management System
 ## created by Enes, Kushagra, Krish and Sivan
 
-View a preview here: https://lesson-track-dashboard.onrender.com 
+View a preview here: [https://lesson-track-dashboard.onrender.com ](https://lesson-track-dashboard.onrender.com)
 If our API keys haven't been updated, there is a demo function which shows hardcoded data for the dashboard. 
 
 LessonTrack is a Python-based automation system designed to streamline tutor reporting, monitor tutor activity, and provide insightful summaries for management and school representatives. It leverages Google Sheets for data storage, Gmail API for email communication, and OpenAI's GPT models for intelligent summarization and safety-checking of tutor reports. The demo offers a flask frontend in order to display information in a dashboard.
